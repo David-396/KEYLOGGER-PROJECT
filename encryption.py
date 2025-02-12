@@ -1,7 +1,27 @@
-#Copyright (c) 2024 Eli Fisher
 import os
 import json
 from cryptography.fernet import Fernet
+
+"""
+1. encryption.py
+
+	•	מטרה: ניהול הצפנה ופענוח של הנתונים שנקלטו.
+	•	ספריות מיובאות:
+	•	os ו-json: לצורך עבודה עם קבצים ונתונים בפורמט JSON.
+	•	cryptography.fernet.Fernet: מספקת הצפנה סימטרית מאובטחת.
+	•	פונקציות מרכזיות:
+	1.	generate_key(key_file="key.key"):
+	•	מייצרת מפתח הצפנה חדש אם הוא לא קיים.
+	•	שומרת את המפתח בקובץ key.key לשימוש עתידי.
+	2.	load_key(key_file="key.key"):
+	•	טוענת מפתח הצפנה קיים.
+	•	זורקת שגיאה אם קובץ המפתח לא נמצא.
+	3.	encrypt_data(data, key, output_file="keylog.enc"):
+	•	מצפינה את הנתונים שנמסרו (בפורמט JSON) ושומרת אותם בקובץ keylog.enc.
+	4.	decrypt_data(key, input_file="keylog.enc"):
+	•	מפענחת את הנתונים המוצפנים מהקובץ keylog.enc.
+
+"""
 
 
 def generate_key(key_file="key.key"):
