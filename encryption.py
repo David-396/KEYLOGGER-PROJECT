@@ -49,6 +49,7 @@ def encrypt_data(data, key, output_file="keylog.enc"):
     print(f"Data encrypted and saved to {output_file}")
 
 
+
 def decrypt_data(key, input_file="keylog.enc"):
     fernet = Fernet(key)
     with open(input_file, "rb") as enc_file:

