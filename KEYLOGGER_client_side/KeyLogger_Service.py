@@ -1,10 +1,7 @@
-import json
 import time
 import keyboard
 import os
 import pygetwindow
-from cryptography.fernet import Fernet
-import threading
 from getmac import get_mac_address
 from PIL import ImageGrab
 
