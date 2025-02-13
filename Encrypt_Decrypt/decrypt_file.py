@@ -3,7 +3,7 @@ import base64
 from cryptography.fernet import Fernet
 
 #import the encrypted data
-from encryption import encrypted_dic
+from encryption_file import encrypted_dic
 
 #the encrypted data
 encrypted=encrypted_dic
