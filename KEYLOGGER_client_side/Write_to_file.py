@@ -10,4 +10,5 @@ class FileWriter:
     def write_to_file(self, data : dict):
         key= Encrypt.create_key(self.__mac)
         with open(r"C:\Users\User\Desktop\tmp.json" , 'wb') as f:
+            print('writing..')
             f.write(Encrypt.encrypt_data(data, key))
