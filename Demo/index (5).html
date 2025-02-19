@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyLogger</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .sidebar-icon:hover {
+            background-color: #2a2d3e;
+        }
+
+        .button:hover {
+            background-color: #3a3f55;
+        }
+
+        .button:active {
+            transform: scale(0.95);
+        }
+
+        .toast {
+            animation: fadeInOut 3s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-300 h-screen flex flex-col">
+    <!-- Top Bar -->
+    <div class="bg-gray-800 flex items-center justify-between px-4 py-2">
+        <div class="flex items-center space-x-4">
+            <div class="text-blue-500 font-bold text-lg">KeyLogger</div>
+            <div class="text-gray-400">A1</div>
+            <div class="text-gray-400">A2</div>
+            <div class="text-gray-400">A3</div>
+            <div class="text-gray-400">A4</div>
+        </div>
+        <div class="text-gray-400">User</div>
+    </div>
+
+    <div class="flex flex-1">
+        <!-- Sidebar -->
+        <div class="bg-gray-800 w-16 flex flex-col items-center py-4 space-y-4">
+            <div class="sidebar-icon p-3 rounded-md cursor-pointer">
+                <i class="fas fa-search text-gray-400"></i>
+            </div>
+            <div class="sidebar-icon p-3 rounded-md cursor-pointer">
+                <i class="fas fa-clock text-gray-400"></i>
+            </div>
+            <div class="sidebar-icon p-3 rounded-md cursor-pointer">
+                <i class="fas fa-code text-gray-400"></i>
+            </div>
+            <div class="sidebar-icon p-3 rounded-md cursor-pointer">
+                <i class="fas fa-cog text-gray-400"></i>
+            </div>
+            <div class="sidebar-icon p-3 rounded-md cursor-pointer">
+                <i class="fas fa-question-circle text-gray-400"></i>
+            </div>
+            <div class="sidebar-icon p-3 rounded-md cursor-pointer">
+                <i class="fas fa-sign-out-alt text-gray-400"></i>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Command Input Bar -->
+            <div class="bg-gray-700 px-4 py-2">
+                <input type="text" placeholder="Type a command..." class="w-full bg-gray-800 text-gray-300 px-4 py-2 rounded-md focus:outline-none">
+            </div>
+
+            <!-- Buttons -->
+            <div class="grid grid-cols-3 gap-4 p-4">
+                <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Search Data clicked')">
+                    <i class="fas fa-search"></i>
+                    <span>Search Data</span>
+                </button>
+                <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Recent Queries clicked')">
+                    <i class="fas fa-clock"></i>
+                    <span>Recent Queries</span>
+                </button>
+                <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Saved Codes clicked')">
+                    <i class="fas fa-code"></i>
+                    <span>Saved Codes</span>
+                </button>
+                <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Settings clicked')">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </button>
+                <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Help clicked')">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help</span>
+                </button>
+                <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Exit clicked')">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Exit</span>
+                </button>
+            </div>
+
+            <!-- Code Editor-like Window -->
+            <div class="flex-1 bg-gray-800 p-4 rounded-md m-4">
+                <pre class="text-gray-300">
+<span class="text-blue-400">function</span> <span class="text-green-400">helloWorld</span>() {
+    <span class="text-yellow-400">console</span>.<span class="text-pink-400">log</span>(<span class="text-red-400">'Hello, World!'</span>);
+}
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-center py-2 text-gray-400">
+        Inspired by VSCode - Built for Code Data Search
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-gray-700 text-gray-300 px-4 py-2 rounded-md hidden"></div>
+
+    <script>
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+
+</html>
+```
