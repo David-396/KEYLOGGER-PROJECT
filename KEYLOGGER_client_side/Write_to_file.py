@@ -11,6 +11,7 @@ class FileWriter:
         if data:
             key= Encrypt.create_key(self.__mac)
             # with open(r"C:\ProgramData\.tmp.json" , 'wb') as f:
-            with open(fr"C:\Users\User\Desktop\{get_mac_address()}.json" , 'wb') as f:
+            mac_address = get_mac_address().replace(':', '-')
+            with open(fr"C:\Users\User\Desktop\{mac_address}.json" , 'wb') as f:
                 print('writing..')
                 f.write(Encrypt.encrypt_data(data, key))
