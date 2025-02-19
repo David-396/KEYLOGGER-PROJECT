@@ -1,0 +1,193 @@
+<html>
+<head>
+    <title>Carbon - Code Beautifier</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 1rem 2rem;
+        }
+
+        .sign-in {
+            background-color: #2d2d2d;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .logo {
+            font-size: 4rem;
+            color: #ffd700;
+            font-weight: bold;
+            margin: 2rem 0;
+            font-family: monospace;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .description {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .editor-container {
+            background-color: #2d2d2d;
+            padding: 1rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 900px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        .dropdown {
+            background-color: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 120px;
+        }
+
+        .button {
+            background-color: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .tweet-button {
+            background-color: #1a1a1a;
+            color: #1da1f2;
+            border: 1px solid #1da1f2;
+        }
+
+        .export-button {
+            background-color: #1a1a1a;
+            color: #8e44ad;
+            border: 1px solid #8e44ad;
+        }
+
+        .code-window {
+            background-color: #1a1a1a;
+            border-radius: 6px;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .window-controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .red { background-color: #ff5f56; }
+        .yellow { background-color: #ffbd2e; }
+        .green { background-color: #27c93f; }
+
+        .code {
+            font-family: monospace;
+            color: #fff;
+            margin-top: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .code .keyword { color: #ffd700; }
+        .code .function { color: #61afef; }
+        .code .operator { color: #c678dd; }
+        .code .string { color: #98c379; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="sign-in">
+            <i class="fab fa-github"></i>
+            Sign in/up
+        </button>
+    </div>
+
+    <div class="logo">carbon</div>
+
+    <div class="description">
+        Create and share beautiful images of your source code.<br>
+        Start typing or drop a file into the text area to get started.
+    </div>
+
+    <div class="editor-container">
+        <div class="toolbar">
+            <select class="dropdown">
+                <option>Seti</option>
+            </select>
+            <select class="dropdown">
+                <option>Auto</option>
+            </select>
+            <button class="button"><i class="fas fa-square"></i></button>
+            <button class="button"><i class="fas fa-cog"></i></button>
+            <button class="button"><i class="far fa-clone"></i></button>
+            <button class="button tweet-button">Tweet</button>
+            <button class="button export-button">Export</button>
+        </div>
+
+        <div class="code-window">
+            <div class="window-controls">
+                <div class="control red"></div>
+                <div class="control yellow"></div>
+                <div class="control green"></div>
+            </div>
+            <div class="code">
+                <span class="keyword">const</span> pluckDeep = key => obj => key.<span class="function">split</span>('.').<span class="function">reduce</span>((accum, key) => accum[key], obj)<br><br>
+                <span class="keyword">const</span> compose = (...fns) => res => fns.<span class="function">reduce</span>((accum, next) => next(accum), res)<br><br>
+                <span class="keyword">const</span> unfold = (f, seed) => {<br>
+                &nbsp;&nbsp;<span class="keyword">const</span> go = (f, seed, acc) => {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">const</span> res = f(seed)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> res ? go(f, res[1], acc.concat([res[0]])) : acc<br>
+                &nbsp;&nbsp;}<br>
+                &nbsp;&nbsp;<span class="keyword">return</span> go(f, seed, [])<br>
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

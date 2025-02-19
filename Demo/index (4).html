@@ -1,0 +1,164 @@
+<html>
+<head>
+    <title>Codify.AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            font-family: 'Share Tech Mono', monospace;
+            color: white;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .logo-icon {
+            color: #6e4fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a.active {
+            color: white;
+        }
+
+        .menu-icon {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(0deg, rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://placehold.co/1200x800/000000/0066ff/png') center/cover;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            color: #4d9fff;
+            margin-bottom: 2rem;
+        }
+
+        .try-now-btn {
+            background-color: #e6ff00;
+            color: black;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .status-bar {
+            position: absolute;
+            bottom: 2rem;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 2rem;
+            color: #4d9fff;
+            font-size: 0.8rem;
+        }
+
+        .progress-text {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-value {
+            color: #fff;
+        }
+
+        .corner-x {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: #666;
+        }
+
+        .corner-globe {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <i class="fas fa-cube logo-icon"></i>
+            Codify.AI
+        </div>
+        <div class="nav-links">
+            <a href="#" class="active">PRODUCT</a>
+            <a href="#">FEATURES</a>
+            <a href="#">OPEN SOURCE</a>
+            <a href="#">PRICING</a>
+        </div>
+        <i class="fas fa-bars menu-icon"></i>
+    </nav>
+
+    <div class="hero">
+        <i class="fas fa-globe corner-globe"></i>
+        <div class="corner-x">XX XXX</div>
+        <h1>&lt;WORK WITH YOUR CODE<br>CONFIDENTLY&gt;</h1>
+        <p>Allow AI to become your partner in code creation.</p>
+        <button class="try-now-btn">TRY NOW</button>
+        
+        <div class="status-bar">
+            <div class="progress-text">
+                ANALYZING YOUR WAY <span class="progress-value">80%</span>
+            </div>
+            <div class="progress-text">
+                EXPERIENCE BOOST
+            </div>
+        </div>
+    </div>
+</body>
+</html>
