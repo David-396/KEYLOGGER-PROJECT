@@ -47,7 +47,7 @@ class KeyloggerService:
 
     @staticmethod
     def __current_time() -> str:
-        return time.strftime('%%H:%M')
+        return time.strftime('%H:%M')
 
     def __on_press(self, pressed_key):
         key = pressed_key.name
