@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KeyLogger</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
@@ -37,6 +38,30 @@
                 opacity: 1;
             }
         }
+
+        /* Tooltip עם אנימציה */
+        .tooltip {
+            position: absolute;
+            left: 100%;
+            margin-left: 8px;
+            background-color: #3a3f55;
+            padding: 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            font-size: 0.75rem;
+            /* הסתרה ראשונית */
+            opacity: 0;
+            transform: translateY(-5px);
+            pointer-events: none;
+            /* הגדרת המעבר */
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .sidebar-icon:hover .tooltip {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
     </style>
 </head>
 
@@ -44,11 +69,8 @@
     <!-- Top Bar -->
     <div class="bg-gray-800 flex items-center justify-between px-4 py-2">
         <div class="flex items-center space-x-4">
+            <!-- KeyLogger Title -->
             <div class="text-blue-500 font-bold text-lg">KeyLogger</div>
-            <div class="text-gray-400">A1</div>
-            <div class="text-gray-400">A2</div>
-            <div class="text-gray-400">A3</div>
-            <div class="text-gray-400">A4</div>
         </div>
         <div class="text-gray-400">User</div>
     </div>
@@ -56,54 +78,74 @@
     <div class="flex flex-1">
         <!-- Sidebar -->
         <div class="bg-gray-800 w-16 flex flex-col items-center py-4 space-y-4">
-            <div class="sidebar-icon p-3 rounded-md cursor-pointer">
-                <i class="fas fa-search text-gray-400"></i>
+            <!-- Icon 1 -->
+            <div class="sidebar-icon p-3 rounded-md cursor-pointer relative">
+                <i class="fas fa-desktop text-gray-400"></i>
+                <div class="tooltip">
+                    Nickname: UserA<br>
+                    MAC: 11:22:33:44:55:66<br>
+                    Tracking: Active<br>
+                    Start: 2024-08-01
+                </div>
             </div>
-            <div class="sidebar-icon p-3 rounded-md cursor-pointer">
-                <i class="fas fa-clock text-gray-400"></i>
+
+            <!-- Icon 2 -->
+            <div class="sidebar-icon p-3 rounded-md cursor-pointer relative">
+                <i class="fas fa-desktop text-gray-400"></i>
+                <div class="tooltip">
+                    Nickname: RandomGuy<br>
+                    MAC: AB:CD:EF:12:34:56<br>
+                    Tracking: Inactive<br>
+                    Start: 2023-11-05
+                </div>
             </div>
-            <div class="sidebar-icon p-3 rounded-md cursor-pointer">
-                <i class="fas fa-code text-gray-400"></i>
+
+            <!-- Icon 3 -->
+            <div class="sidebar-icon p-3 rounded-md cursor-pointer relative">
+                <i class="fas fa-desktop text-gray-400"></i>
+                <div class="tooltip">
+                    Nickname: Guest007<br>
+                    MAC: 9F:8E:7D:6C:5B:4A<br>
+                    Tracking: Active<br>
+                    Start: 2025-01-20
+                </div>
             </div>
-            <div class="sidebar-icon p-3 rounded-md cursor-pointer">
-                <i class="fas fa-cog text-gray-400"></i>
-            </div>
-            <div class="sidebar-icon p-3 rounded-md cursor-pointer">
-                <i class="fas fa-question-circle text-gray-400"></i>
-            </div>
-            <div class="sidebar-icon p-3 rounded-md cursor-pointer">
-                <i class="fas fa-sign-out-alt text-gray-400"></i>
+
+            <!-- Icon 4 -->
+            <div class="sidebar-icon p-3 rounded-md cursor-pointer relative">
+                <i class="fas fa-desktop text-gray-400"></i>
+                <div class="tooltip">
+                    Nickname: DemoUser<br>
+                    MAC: 00:AA:BB:CC:DD:EE<br>
+                    Tracking: Suspended<br>
+                    Start: 2024-12-10
+                </div>
             </div>
         </div>
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col">
-            <!-- Command Input Bar -->
-            <div class="bg-gray-700 px-4 py-2">
-                <input type="text" placeholder="Type a command..." class="w-full bg-gray-800 text-gray-300 px-4 py-2 rounded-md focus:outline-none">
-            </div>
-
             <!-- Buttons -->
             <div class="grid grid-cols-3 gap-4 p-4">
                 <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Search Data clicked')">
                     <i class="fas fa-search"></i>
                     <span>Search Data</span>
                 </button>
-                <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Recent Queries clicked')">
+                <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Search by Date clicked')">
                     <i class="fas fa-clock"></i>
-                    <span>Recent Queries</span>
+                    <span>Search by Date</span>
                 </button>
-                <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Saved Codes clicked')">
+                <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Locate Passwords clicked')">
                     <i class="fas fa-code"></i>
-                    <span>Saved Codes</span>
+                    <span>Locate Passwords</span>
                 </button>
-                <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Settings clicked')">
+                <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Change Status clicked')">
                     <i class="fas fa-cog"></i>
-                    <span>Settings</span>
+                    <span>Change Status</span>
                 </button>
-                <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Help clicked')">
+                <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Live View clicked')">
                     <i class="fas fa-question-circle"></i>
-                    <span>Help</span>
+                    <span>Live View</span>
                 </button>
                 <button class="button bg-gray-700 text-gray-300 px-4 py-2 rounded-md flex items-center space-x-2" onclick="showToast('Exit clicked')">
                     <i class="fas fa-sign-out-alt"></i>
@@ -114,9 +156,14 @@
             <!-- Code Editor-like Window -->
             <div class="flex-1 bg-gray-800 p-4 rounded-md m-4">
                 <pre class="text-gray-300">
-<span class="text-blue-400">function</span> <span class="text-green-400">helloWorld</span>() {
-    <span class="text-yellow-400">console</span>.<span class="text-pink-400">log</span>(<span class="text-red-400">'Hello, World!'</span>);
-}
+<span class="text-pink-400">"f8:54:f6:bc:2e:64":</span> 
+    <span class="text-blue-400">12/02/2025</span>          
+        <span class="text-yellow-400">16:04:</span>            
+            <span class="text-red-400">"Desktop - KeyLogger_Manager.py":</span> <span class="text-green-400">Class KeyLogger</span>    
+                <span class="text-green-400">Def start():</span>       
+        <span class="text-yellow-400">16:05:</span>            
+            <span class="text-red-400">Google Chrome - new tab :</span> <span class="text-green-400">how to build a key logger in python,</span> 
+            <span class="text-red-400">"Program Manager":</span>   <span class="text-green-400">"shift+Q"</span>          
                 </pre>
             </div>
         </div>
@@ -124,7 +171,7 @@
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-center py-2 text-gray-400">
-        Inspired by VSCode - Built for Code Data Search
+        Inspired By Moishe Shulman
     </footer>
 
     <!-- Toast Notification -->
@@ -141,6 +188,4 @@
         }
     </script>
 </body>
-
 </html>
-```
