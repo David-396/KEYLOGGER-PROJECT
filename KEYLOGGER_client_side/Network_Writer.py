@@ -22,9 +22,9 @@ class NetworkWrite:
             send_data = {'data': str(data), 'mac': self.__mac}
             res = requests.post(self.__server_link, json=send_data)
             res_status = res.status_code
-            print('status: ', res.status_code)
             self.__left_data = ''
+            print('net writed')
         except:
             if res_status != 200:
                 self.__left_data += Decrypt.decrypt_data(data, self.__key)
-                print('innnn')
+                print('left data')
