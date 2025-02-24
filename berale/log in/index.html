@@ -1,34 +1,90 @@
 <!DOCTYPE html>
 <html lang="he">
 <head>
-  <title>דלילה - כניסה לאתר</title>
-  <link type="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
+    <!-- <script src="js2.js"></script> -->
+  <meta charset="UTF-8">
+  <title>דף כניסה</title>
+ 
 </head>
 <body>
-  <div class="container">
-    <!-- כותרות -->
-    <h1>דלילה</h1>
-    <h2>המקום בו מזמברים את אויבנו</h2>
-    
-    <!-- תיבות קלט -->
-    <div>
-      <label for="username">שם משתמש</label>
-      <input type="text" id="username" placeholder="הזן שם משתמש">
-    </div>
-    <div class="input-group">
-      <label for="password">סיסמה</label>
-      <input type="password" id="password" placeholder="הזן סיסמה">
-      <span class="toggle-password" onclick="togglePassword()">👁️</span>
-    </div>
-    
-    <!-- לחצן כניסה -->
-    <button onclick="login()">היכנס</button>
-    
-    <!-- תיבת הודעות -->
-    <div class="message" id="message"></div>
-  </div>
-  
-  <script src="index.js">
-</script>
+    <div class="login-container">
+        <h1>דלילה</h1>
+        <h2>המקום בו מזמברים את אויבנו</h2>
+        
+        <div>
+          <label for="username">שם משתמש</label>
+          <input type="text" id="username" placeholder="הזן שם משתמש">
+        </div>
+        
+        <div class="input-group">
+          <label for="password">סיסמה</label>
+          <input type="password" id="password" placeholder="הזן סיסמה">
+          <span class="toggle-password" onclick="togglePassword()">👁️</span>
+        </div>
+        
+        <button id="loginBtn">היכנס</button>
+        <div class="message" id="message"></div>
+      </div>
+  <script>
+     function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      passwordInput.type = (passwordInput.type === "password") ? "text" : "password";
+    }
+    // פונקציה להצגת הודעות למשתמש
+    function displayMessage(message, color) {
+      const msgDiv = document.getElementById("message");
+      msgDiv.style.color = color;
+      msgDiv.innerText = message;
+    }
+
+    // הפונקציה שקוראת לשרת ומטפלת בתגובה
+    function loginUser() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      if (password.length < 4) {
+        displayMessage( "הסיסמה צריכה להיות לפחות 4 תווים", "red");
+        return;
+      }
+
+      fetch("http://127.0.0.1:5000/login", {  // ודא שהכתובת נכונה בהתאם לשרת שלך
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username: username, password: password })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // טיפול בתגובה בהתאם לתנאים שהוגדרו
+        if (data === false) {
+          // המשתמש ננעל לאחר 3 ניסיונות שגויים
+          displayMessage("חשבונך נחסם בשל ביטחון מידע", "red");
+        } else if (data.name === false) {
+          // המשתמש לא קיים
+          displayMessage("משתמש לא קיים", "red");
+        } else if (data.password === false) {
+          // סיסמה שגויה
+          displayMessage("סיסמה שגויה", "red");
+        } else if (data.name && data.password) {
+          // התחברות מוצלחת
+          displayMessage("התחברת בהצלחה!", "green");
+          // הפנייה לדף המבוקש לאחר הודעה מוצלחת
+          setTimeout(() => {
+            window.location.href = "file:///C:/Users/User/Desktop/%D7%94%D7%A4%D7%A8%D7%95%D7%99%D7%99%D7%A7%D7%98%20%D7%A9%D7%9C%D7%99/front_berale/index.html";
+          }, 1000);
+        } else {
+          displayMessage("שגיאה לא צפויה", "red");
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        displayMessage("שגיאה בשרת", "red");
+      });
+    }
+
+    // קישור לחצן ההתחברות
+    document.getElementById("loginBtn").addEventListener("click", loginUser);
+  </script>
 </body>
 </html>
