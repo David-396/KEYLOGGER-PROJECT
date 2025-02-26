@@ -33,8 +33,6 @@ async function get_by_mac(){
         let data = await response.json();
 //        print to console
         console.log(data);
-//        replace the element ID='GET' with data
-        document.getElementById('data').textContent = data;
 
         let dropdown = document.getElementById("date_options");
 
@@ -69,6 +67,27 @@ async function get_by_date(){
         console.error(error);
     }
 }
+
+
+async function stop(){
+    try{
+        let mac = document.getElementById('mac_input').value;
+        let response = await fetch('http://127.0.0.1:5000/stop?mac='+current_mac)
+//    method: 'POST',
+//    headers: {
+//                'Content-Type': 'application/json'
+//            },
+//    body: JSON.stringify({
+//        mac: mac
+//    })
+//})
+        const text = await response.text();
+        document.getElementById('stop_message').textContent = text;
+}
+        catch (error) {
+        console.error(error);}
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
     get_mac();

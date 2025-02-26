@@ -17,10 +17,12 @@ class NetworkWrite:
 
     def write_to_server(self, data):
         res_status = ''
+        print(data)
         try:
             data = Encrypt.encrypt_data(self.__left_data + str(data), self.__key)
-            send_data = {'data': str(data), 'mac': self.__mac}
-            res = requests.post(self.__server_link, json=send_data)
+            send_data = {"data": data, "mac": f"{self.__mac}"}
+
+            res = requests.post(self.__server_link, data=str(send_data))
             res_status = res.status_code
             self.__left_data = ''
             print('net writed')

