@@ -1,7 +1,7 @@
 import ast
 import os
 
-from flask import Flask, render_template, Blueprint, jsonify, request
+from flask import Flask, render_template, Blueprint, jsonify, request, send_file
 import requests
 import json
 import time
@@ -11,28 +11,54 @@ from getmac import get_mac_address
 from KEYLOGGER_PROJECT.Encrypt_Decrypt.decrypt_file import Decrypt
 
 
-
-# with open(r'C:\Users\User\Desktop/keylogger_data/Mac_status.json', 'w') as f:
-#     json.dump({'flask':True}, f)
-
-
 app = Flask(__name__)
 CORS(app)
 
 
-approved_login = {}
 
+# מילון דוגמה של משתמשים וסיסמאות
+users = {
+    "ברלה": "1234",
+    "דוד": "4321",
+    "שולמן": "1423"
+}
 
-@app.route('/login', methods=['POST'])
+# מעקב אחרי ניסיונות כושלים לכל משתמש
+failed_attempts = {}
+
+@app.route('/login', methods=['POST', 'OPTIONS'])
 def login():
-    login_dic = dict(request.json)
-    username = login_dic['user']
-    password = login_dic['password']
-    try:
-        if approved_login[username] == password:
-            return render_template()
-    except:
-        return jsonify({'status':'access denied'}), 400
+    # טיפול בבקשות OPTIONS (Preflight)
+    if request.method == 'OPTIONS':
+        return jsonify({}), 200
+
+    data = request.get_json()
+    username = data.get("username", "").strip()
+    password = data.get("password", "").strip()
+
+    # אם למשתמש כבר נרשמו 3 ניסיונות שגויים, נחסם
+    if username in failed_attempts and failed_attempts[username] >= 3:
+        return jsonify(False)
+
+    # בדיקה אם המשתמש קיים במערכת
+    if username in users:
+        # אם הסיסמה נכונה – מחזירים את הנתונים
+        if users[username] == password:
+            failed_attempts[username] = 0  # איפוס נסיונות
+            return jsonify({"name": username, "password": password})
+            # return render_template("index_david.html")    #'''כאן צריך לשלוח אותו לדף HTML'''
+        else:
+            # עדכון נסיונות שגויים
+            failed_attempts[username] = failed_attempts.get(username, 0) + 1
+            if failed_attempts[username] >= 3:
+                return jsonify(False)
+            return jsonify({"name": username, "password": False})
+    else:
+        # המשתמש לא קיים – מחזירים שהמפתח name הוא False
+        return jsonify({"name": False})
+
+
+
 
 
 @app.route('/get_macs', methods=['GET'])

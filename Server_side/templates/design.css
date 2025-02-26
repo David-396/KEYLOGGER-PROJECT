@@ -1,0 +1,24 @@
+#for_h1{
+color:black
+}
+
+body1{
+	background:url(https://media.istockphoto.com/id/1457353108/photo/computer-hacker.jpg?s=612x612&w=0&k=20&c=h40R0Kikw8QAFIAM5Bz8Ixygeycoqhnkvai1ENJEIYQ=) no-repeat center;
+	height: 100%;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  }
+
+ p{
+ color:black
+ }
+
+#label_for_mac{
+color:black
+}
+
+#search_button11{
+display:none
+}

