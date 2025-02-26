@@ -1,0 +1,85 @@
+for_h1{
+color:black;
+}
+
+body{
+	background:url(https://media.istockphoto.com/id/1457353108/photo/computer-hacker.jpg?s=612x612&w=0&k=20&c=h40R0Kikw8QAFIAM5Bz8Ixygeycoqhnkvai1ENJEIYQ=) no-repeat center;
+	height: 100%;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  }
+
+p{
+ color:white;
+ }
+
+#label_for_mac{
+color:white;
+}
+
+#search_button{
+display:none;
+}
+
+/* design.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: #e0e0e0;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  color: #ff4081;
+  font-size: 2.5rem;
+  margin-top: 20px;
+}
+
+#for_h1 {
+  padding: 10px;
+  background-color: #1e1e1e;
+  border-bottom: 2px solid #ff4081;
+}
+
+label {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  display: block;
+}
+
+input, select {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #ff4081;
+  padding: 10px;
+  border-radius: 5px;
+  width: 250px;
+  text-align: center;
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+button {
+  background-color: #ff4081;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #e91e63;
+}
+
+div {
+  margin: 15px auto;
+  max-width: 500px;
+}
+

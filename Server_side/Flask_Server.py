@@ -93,7 +93,7 @@ def get_by_date():
             file_data = f.read()
             byte_value = ast.literal_eval(file_data)
             decrypted_data = Decrypt.decrypt_data(byte_value, key)
-            return jsonify(decrypted_data), 200
+            return str(decrypted_data), 200
     except Exception:
         return jsonify({'status':'date not available'}), 400
 

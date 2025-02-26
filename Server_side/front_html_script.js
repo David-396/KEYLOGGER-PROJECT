@@ -1,13 +1,3 @@
-//function fun(){
-//a=fetch("http://127.0.0.1:5000/?mac=ddddd").then(response => response.text())
-//.then(data => document.getElementById('get').textContent=data)
-//.catch(error => console.error('שגיאה:', error));
-
-//a=fetch("http://127.0.0.1:5000/?mac=ddddd").then(response => response.text()).then(data => console.log(data))
-//a=await fetch("http://127.0.0.1:5000/?mac=ddddd");
-//console.log(a.text());
-//console.log(a);
-//}
 
 //let dropdown = getElementById("date_options");
 //let mac_input = getElementById('mac_input').value
