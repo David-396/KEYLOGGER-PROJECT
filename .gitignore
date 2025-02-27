@@ -1,0 +1,65 @@
+Ignore Python compiled files
+
+pycache/
+*.py[cod]
+
+Ignore virtual environments
+
+venv/
+.env/
+
+Ignore system files
+
+.DS_Store
+Thumbs.db
+
+Ignore log files
+
+*.log
+logs/
+
+Ignore temporary files
+
+*.tmp
+*.swp
+*.swo
+
+Ignore keylogger-related sensitive files
+
+*.json
+*.txt
+*.log
+*.db
+
+Ignore encryption files
+
+*.enc
+
+Ignore screenshots and captured data
+
+screenshots/
+data/
+
+Ignore IDE-specific files
+
+.vscode/
+.idea/
+*.iml
+
+Ignore environment configuration files
+
+.env
+config.ini
+
+Ignore Flask-related files
+
+instance/
+*.sqlite3
+pycache/
+
+Ignore user data and MAC address logs
+
+keylogger_data/
+Mac_addresses.json
+Mac_status.json
+
